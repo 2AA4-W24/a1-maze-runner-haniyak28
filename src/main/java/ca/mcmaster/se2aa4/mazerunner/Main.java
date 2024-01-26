@@ -32,7 +32,7 @@ public class Main {
                 }
             }
         }
-        if (inputFile == null) { //should i add (|| inputPath == null) too?
+        if (inputFile == null) {
             logger.error("Error: No input file given. Use -i to specify the input file.");
             return;
         }
@@ -40,25 +40,14 @@ public class Main {
         //takes file input and turns maze into a 2d array list
         char[][] maze = MazeInput.MazeRead(inputFile);
 
-
         //if there's a second argument of path sequence
-        //MazeExplorer(char[][] maze, string inputSequence);
-        //if (MazeExplorer is true, print that their sequence is right otherwise print that it was wrong)
-
-        logger.info("**** Computing path");
-        // Using the pathGenerator class to generate the path
-        String generatedPath = pathGenerator.generatePath(maze);
-        logger.info(generatedPath);
-    }
-
-
-    //Input sequence verification
-    public static boolean MazeExplorer(char[][] maze, String inputSequence) {
-        //use variables entryRow and entryCol and exitRow and exitCol in this class too
-        boolean sequence_verification = false;
-
-        //go through the maze using given input sequence and see if it is right
-
-        return sequence_verification; //true if it is right and false if it is not right
+        if (inputPath != null) {
+            MazeExplorer.VerifyPath(maze, inputPath);
+        } else {
+            logger.info("**** Computing a path");
+            // Using the pathGenerator class to generate the path
+            String generatedPath = pathGenerator.generatePath(maze);
+            logger.info(generatedPath);
+        }
     }
 }
