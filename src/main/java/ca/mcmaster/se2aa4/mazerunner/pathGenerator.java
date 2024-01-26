@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 public class pathGenerator {
     private static final Logger logger = LogManager.getLogger();
     //initializing entry point and exit point variables
-    static int entryRow, entryCol, exitRow, exitCol;
+    public static int entryRow, entryCol, exitRow, exitCol;
     public static String generatePath(char[][] maze) {
         String path = ""; //for final result output
 
@@ -92,7 +92,7 @@ public class pathGenerator {
         return FrontChar;
     }
 
-    private static void turnRight(char currentDirection) {
+    public static void turnRight(char currentDirection) {
         char[] directions = {'N', 'E', 'S', 'W'};
         // Helper method to turn right
         // Update currentDirection based on the current direction
@@ -107,7 +107,7 @@ public class pathGenerator {
         }
     }
 
-    private static void turnLeft(char currentDirection) {
+    public static void turnLeft(char currentDirection) {
         char[] directions = {'N', 'W', 'S', 'E'};
         // Helper method to turn left
         // Update currentDirection based on the current direction
@@ -122,7 +122,7 @@ public class pathGenerator {
         }
     }
 
-    private static void moveForward(char currentDirection, int currentRow, int currentCol) {
+    public static void moveForward(char currentDirection, int currentRow, int currentCol) {
         // Helper method to move forward
         // Update currentRow and currentCol based on the current direction
         if (currentDirection == 'N') currentRow--;
