@@ -10,7 +10,7 @@ public class pathGenerator {
     public static int currentRow, currentCol;
     public static char currentDirection;
 
-    public static String generatePath(char[][] maze) {
+    public static void generatePath(char[][] maze) {
         String path = ""; //for final result output
 
         // Find entry and exit points
@@ -18,17 +18,42 @@ public class pathGenerator {
 
         if (entryRow == -1 || entryCol == -1 || exitRow == -1 || exitCol == -1) {
             logger.error("Error: Entry or exit point not found in the maze.");
-            return null;
+            return;
         }
 
         //run the algorithm function
         List<Character> gen_path = RightHandRule(maze);
-        logger.info("right hand rule ran");
+        //logger.info("right hand rule ran");
+
+        // Factorize the generated path
+        List<String> factorizedPath = factorizePath(gen_path);
+
         //turn list into string to return and print in main
         for (Character i : gen_path) {
             path += i;
         }
-        return path;
+
+        logger.info("Canonical Path: " + path);
+        logger.info("Factorized Path: " + String.join(" ", factorizedPath));
+    }
+
+    private static List<String> factorizePath(List<Character> path) {
+        List<String> factorizedPath = new ArrayList<>();
+        int counter = 1;
+
+        for (int i = 1; i < path.size(); i++) {
+            if (path.get(i) == path.get(i - 1)) {
+                counter++;
+            } else {
+                factorizedPath.add(counter + String.valueOf(path.get(i - 1)));
+                counter = 1;
+            }
+        }
+
+        // Add the last move
+        factorizedPath.add(counter + String.valueOf(path.get(path.size() - 1)));
+
+        return factorizedPath;
     }
 
     private static List<Character> RightHandRule(char[][] maze) {

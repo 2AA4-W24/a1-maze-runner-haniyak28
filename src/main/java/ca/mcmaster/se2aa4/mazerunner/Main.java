@@ -50,8 +50,8 @@ public class Main {
         } else {
             logger.info("**** Computing a path");
             // Using the pathGenerator class to generate the path
-            String generatedPath = pathGenerator.generatePath(maze);
-            logger.info(generatedPath);
+            pathGenerator.generatePath(maze);
+            //logger.info(generatedPath);
         }
     }
 }

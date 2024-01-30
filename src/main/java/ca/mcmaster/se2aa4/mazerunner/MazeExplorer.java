@@ -23,7 +23,6 @@ public class MazeExplorer extends pathGenerator{
         boolean verification = false;
         for (int choice = 0; choice<directionChoice.length;choice++) {
             currentDirection = directionChoice[choice];
-            //currentDirection = 'E';
             // Find entry and exit points
             currentRow = entryRowPoint[choice];
             currentCol = entryColPoint[choice];
@@ -55,8 +54,8 @@ public class MazeExplorer extends pathGenerator{
             logger.info("Your path sequence is not correct");
             logger.info("**** Computing a correct path");
             // Using the pathGenerator class to generate the path
-            String generatedPath = pathGenerator.generatePath(maze);
-            logger.info(generatedPath);
+            pathGenerator.generatePath(maze);
+            //logger.info(generatedPath);
         }
     }
 }
