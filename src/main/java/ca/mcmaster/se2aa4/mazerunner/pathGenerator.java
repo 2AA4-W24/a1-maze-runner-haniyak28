@@ -133,7 +133,7 @@ public class pathGenerator {
         logger.info(currentDirection);
     }
 
-    private static void EntryAndExit(char[][] maze) {
+    public static void EntryAndExit(char[][] maze) {
         entryRow = entryCol = exitRow = exitCol = -1;
         // Find the entry point assuming it's on the leftmost wall
         for (int row = 0; row < maze.length; row++) {

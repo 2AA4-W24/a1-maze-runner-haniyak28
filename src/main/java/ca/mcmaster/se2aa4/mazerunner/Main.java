@@ -26,7 +26,8 @@ public class Main {
                 if (i + 1 < args.length) {
                     inputFile = args[i + 1];
                 }
-            } else if (args[i].equals("-p")) {
+            }
+            if (args[i].equals("-p")) {
                 // Check if there is another argument after the option
                 if (i + 1 < args.length) {
                     inputPath = args[i + 1];
@@ -44,7 +45,7 @@ public class Main {
 
         //if there's a second argument of path sequence
         if (inputPath != null) {
-            logger.info("**** verifying the path");
+            logger.info("**** verifying the path " + inputPath);
             MazeExplorer.VerifyPath(maze, inputPath);
         } else {
             logger.info("**** Computing a path");

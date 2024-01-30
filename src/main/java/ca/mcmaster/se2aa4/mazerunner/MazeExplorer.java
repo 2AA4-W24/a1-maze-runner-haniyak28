@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,8 +15,11 @@ public class MazeExplorer extends pathGenerator{
     public static void VerifyPath(char[][] maze, String inputPath) {
         //use variables entryRow and entryCol and exitRow and exitCol in this class too
         char[] path = inputPath.toCharArray();
+        logger.info(path);
         boolean verification = false;
-        char currentDirection = 'E';
+        currentDirection = 'E';
+        // Find entry and exit points
+        EntryAndExit(maze); //could I make this into a separate class?
         currentRow = entryRow;
         currentCol = entryCol;
 
@@ -28,11 +32,12 @@ public class MazeExplorer extends pathGenerator{
             } else if (path[i] == 'L'){
                 turnLeft();
             }
-
+            logger.info("current row and col " + currentRow + " " + currentCol);
             if (maze[currentRow][currentCol] == '#') {
                 break;
             }
         }
+        logger.info("row and col now: " + currentRow + " " + currentCol);
         if (currentRow == exitRow && currentCol == exitCol) {
             verification = true;
         }
