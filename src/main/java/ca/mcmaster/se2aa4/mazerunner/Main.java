@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,9 +40,11 @@ public class Main {
         logger.info("**** Reading the maze from file " + inputFile);
         //takes file input and turns maze into a 2d array list
         char[][] maze = MazeInput.MazeRead(inputFile);
+        logger.info("**** maze char " + Arrays.deepToString(maze));
 
         //if there's a second argument of path sequence
         if (inputPath != null) {
+            logger.info("**** verifying the path");
             MazeExplorer.VerifyPath(maze, inputPath);
         } else {
             logger.info("**** Computing a path");

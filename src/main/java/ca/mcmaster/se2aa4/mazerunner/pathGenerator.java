@@ -1,19 +1,21 @@
 package ca.mcmaster.se2aa4.mazerunner;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 public class pathGenerator {
     private static final Logger logger = LogManager.getLogger();
     //initializing entry point and exit point variables
     public static int entryRow, entryCol, exitRow, exitCol;
+    public static int currentRow, currentCol;
+    public static char currentDirection;
+
     public static String generatePath(char[][] maze) {
         String path = ""; //for final result output
 
         // Find entry and exit points
         EntryAndExit(maze);
+
         if (entryRow == -1 || entryCol == -1 || exitRow == -1 || exitCol == -1) {
             logger.error("Error: Entry or exit point not found in the maze.");
             return null;
@@ -21,7 +23,7 @@ public class pathGenerator {
 
         //run the algorithm function
         List<Character> gen_path = RightHandRule(maze);
-
+        logger.info("right hand rule ran");
         //turn list into string to return and print in main
         for (Character i : gen_path) {
             path += i;
@@ -31,39 +33,39 @@ public class pathGenerator {
 
     private static List<Character> RightHandRule(char[][] maze) {
         //Initialize the current position and direction
-        int currentRow = entryRow;
-        int currentCol = entryCol;
+        currentRow = entryRow;
+        currentCol = entryCol;
         List<Character> gen_path = new ArrayList<>(); //to record the directions moved
         // Initial direction, facing East because the entry point is on the West border
-        char currentDirection = 'E';
-
+        currentDirection = 'E';
         //Algorithm to find the path and make the moves
-        while (currentRow != exitRow && currentCol != exitCol) {
+        while (!(currentRow == exitRow && currentCol == exitCol)) {
             //run the right hand algorithm
-            char rightCell = RightCell(currentDirection, currentRow, currentCol, maze);
-            char frontCell = FrontCell(currentDirection, currentRow, currentCol, maze);
-            if (rightCell == ' ' && frontCell == ' ') {
-                // If there's an empty space on the right and in front, turn right
-                turnRight(currentDirection);
-                gen_path.add('R');
-            } else if (rightCell == ' ') {
+            char rightCell = RightCell(maze);
+            char frontCell = FrontCell(maze);
+            logger.info("current col and row " + currentCol + " " + currentRow);
+            logger.info("right cell, front cell " + rightCell + " " + frontCell);
+            if (rightCell == ' ') {
                 // If there's an empty space to the right but not forward, turn right
-                turnRight(currentDirection);
+                turnRight();
                 gen_path.add('R');
+                moveForward();
+                gen_path.add('F');
             } else if (frontCell == ' ') {
                 // If there's an empty space in front, move forward
-                moveForward(currentDirection, currentRow, currentCol);
+                moveForward();
                 gen_path.add('F');
             } else {
                 // If there's a wall on the right and in front, turn left
-                turnLeft(currentDirection);
+                turnLeft();
                 gen_path.add('L');
             }
         }
+        logger.info("row and col now: " + currentRow + " " + currentCol);
         return gen_path;
     }
 
-    private static char RightCell(char currentDirection, int currentRow, int currentCol, char[][] maze) {
+    private static char RightCell(char[][] maze) {
         //gives us what the charachter is to the right of the person based on their current direction
         char RightChar = 'X';
         if (currentDirection == 'N') {
@@ -77,7 +79,7 @@ public class pathGenerator {
         }
         return RightChar;
     }
-    private static char FrontCell(char currentDirection, int currentRow, int currentCol, char[][] maze) {
+    private static char FrontCell(char[][] maze) {
         //gives us what the charachter is to the front of the person based on their current direction
         char FrontChar = 'X';
         if (currentDirection == 'N') {
@@ -92,43 +94,43 @@ public class pathGenerator {
         return FrontChar;
     }
 
-    public static void turnRight(char currentDirection) {
+    public static void turnRight() {
         char[] directions = {'N', 'E', 'S', 'W'};
         // Helper method to turn right
         // Update currentDirection based on the current direction
-        for (int i = 0; i< directions.length; i++){
-            if (directions[i] == currentDirection) {
-                if (i == directions.length -1){
-                    currentDirection = directions[0];
-                } else {
-                    currentDirection = directions[i+1];
-                }
-            }
+        switch (currentDirection) {
+            case 'N' -> currentDirection = directions[1];
+            case 'E' -> currentDirection = directions[2];
+            case 'S' -> currentDirection = directions[3];
+            case 'W' -> currentDirection = directions[0];
         }
+        logger.info("turned right");
+        logger.info(currentDirection);
     }
 
-    public static void turnLeft(char currentDirection) {
+    public static void turnLeft() {
         char[] directions = {'N', 'W', 'S', 'E'};
         // Helper method to turn left
         // Update currentDirection based on the current direction
-        for (int i = 0; i< directions.length; i++){
-            if (directions[i] == currentDirection) {
-                if (i == directions.length -1){
-                    currentDirection = directions[0];
-                } else {
-                    currentDirection = directions[i+1];
-                }
-            }
+        switch (currentDirection) {
+            case 'N' -> currentDirection = directions[1];
+            case 'E' -> currentDirection = directions[0];
+            case 'S' -> currentDirection = directions[3];
+            case 'W' -> currentDirection = directions[2];
         }
+        logger.info("left turn");
+        logger.info(currentDirection);
     }
 
-    public static void moveForward(char currentDirection, int currentRow, int currentCol) {
+    public static void moveForward() {
         // Helper method to move forward
         // Update currentRow and currentCol based on the current direction
         if (currentDirection == 'N') currentRow--;
-        else if (currentDirection == 'E') currentCol++;
+        else if (currentDirection == 'E') currentCol++;  //prlly a problem here fix this
         else if (currentDirection == 'S') currentRow++;
         else currentCol--;
+        logger.info("moved forward");
+        logger.info(currentDirection);
     }
 
     private static void EntryAndExit(char[][] maze) {
@@ -141,6 +143,8 @@ public class pathGenerator {
                 break;
             }
         }
+        logger.info(entryCol);
+        logger.info(entryRow);
         // Find the exit point assuming it's on the rightmost wall
         for (int row = 0; row < maze.length; row++) {
             if (maze[row][maze[row].length - 1] == ' ') {
@@ -149,5 +153,7 @@ public class pathGenerator {
                 break;
             }
         }
+        logger.info(exitCol);
+        logger.info(exitRow);
     }
 }

@@ -14,28 +14,27 @@ public class MazeExplorer extends pathGenerator{
     public static void VerifyPath(char[][] maze, String inputPath) {
         //use variables entryRow and entryCol and exitRow and exitCol in this class too
         char[] path = inputPath.toCharArray();
-        boolean verification = true;
+        boolean verification = false;
         char currentDirection = 'E';
-        int currentRow = entryRow;
-        int currentCol = entryCol;
+        currentRow = entryRow;
+        currentCol = entryCol;
 
         //go through the maze using given input sequence and see if it is right
         for (int i = 0; i<path.length; i++) {
             if (path[i] == 'R'){
-                turnRight(currentDirection);
+                turnRight();
             } else if (path[i] == 'F'){
-                moveForward(currentDirection, currentRow, currentCol);
+                moveForward();
             } else if (path[i] == 'L'){
-                turnLeft(currentDirection);
+                turnLeft();
             }
 
             if (maze[currentRow][currentCol] == '#') {
-                verification = false;
                 break;
             }
         }
-        if (currentRow != exitRow && currentCol != exitCol) {
-            verification = false;
+        if (currentRow == exitRow && currentCol == exitCol) {
+            verification = true;
         }
         //if true, print that their sequence is right otherwise print that it was wrong
         if (verification) {
@@ -43,7 +42,7 @@ public class MazeExplorer extends pathGenerator{
         }
         else {
             logger.info("Your path sequence is not correct");
-            logger.info("**** Computing a path");
+            logger.info("**** Computing a correct path");
             // Using the pathGenerator class to generate the path
             String generatedPath = pathGenerator.generatePath(maze);
             logger.info(generatedPath);
