@@ -60,6 +60,9 @@ public class pathGenerator {
                 turnLeft();
                 gen_path.add('L');
             }
+            /*if (currentCol<0 || currentCol>maze[0].length - 1) {
+
+            }*/
         }
         logger.info("row and col now: " + currentRow + " " + currentCol);
         return gen_path;
