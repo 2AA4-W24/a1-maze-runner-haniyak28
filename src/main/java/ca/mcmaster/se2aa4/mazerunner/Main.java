@@ -42,7 +42,8 @@ public class Main {
         } else {
             logger.info("**** Computing a path");
             // Using the pathGenerator class to generate the path
-            pathGenerator.generatePath(maze);
+            pathGen path = new pathGenerator(maze);
+            path.generatePath(maze);
             //logger.info(generatedPath);
         }
     }

@@ -3,14 +3,21 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-public class pathGenerator {
+public class pathGenerator implements pathGen{
     private static final Logger logger = LogManager.getLogger();
     //initializing entry point and exit point variables
     public static int entryRow, entryCol, exitRow, exitCol;
     public static int currentRow, currentCol;
     public static char currentDirection;
+    public pathGenerator(char[][] maze) {
+        String[] generatedPath = generatePath(maze);
 
-    public static void generatePath(char[][] maze) {
+        logger.info("Canonical Path: " + generatedPath[0]);
+        logger.info("Factorized Path: " + generatedPath[1]);
+    }
+    @Override
+    public String[] generatePath(char[][] maze) {
+        String[] fullPath;
         String path = ""; //for final result output
 
         // Find entry and exit points
@@ -18,7 +25,7 @@ public class pathGenerator {
 
         if (entryRow == -1 || entryCol == -1 || exitRow == -1 || exitCol == -1) {
             logger.error("Error: Entry or exit point not found in the maze.");
-            return;
+            return null;
         }
 
         //run the algorithm function
@@ -29,12 +36,14 @@ public class pathGenerator {
         List<String> factorizedPath = factorizePath(gen_path);
 
         //turn list into string to return and print in main
+
         for (Character i : gen_path) {
             path += i;
         }
 
-        logger.info("Canonical Path: " + path);
-        logger.info("Factorized Path: " + String.join("", factorizedPath));
+        fullPath = new String[]{path, String.join("", factorizedPath)};
+
+        return fullPath;
     }
 
     private static List<String> factorizePath(List<Character> path) {
@@ -66,6 +75,7 @@ public class pathGenerator {
             //run the right hand algorithm
             char rightCell = RightCell(maze);
             char frontCell = FrontCell(maze);
+
             //logger.info("current col and row " + currentCol + " " + currentRow);
             //logger.info("right cell, front cell " + rightCell + " " + frontCell);
             if (rightCell == ' ') {
@@ -151,7 +161,7 @@ public class pathGenerator {
         // Helper method to move forward
         // Update currentRow and currentCol based on the current direction
         if (currentDirection == 'N') currentRow--;
-        else if (currentDirection == 'E') currentCol++;  //prlly a problem here fix this
+        else if (currentDirection == 'E') currentCol++;
         else if (currentDirection == 'S') currentRow++;
         else currentCol--;
         //logger.info("moved forward");

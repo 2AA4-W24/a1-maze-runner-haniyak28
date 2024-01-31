@@ -5,6 +5,11 @@ import org.apache.logging.log4j.Logger;
 public class MazeExplorer extends pathGenerator{
     //Input sequence verification
     private static final Logger logger = LogManager.getLogger();
+
+    public MazeExplorer(char[][] maze) {
+        super(maze);
+    }
+
     //initializing entry point and exit point variables
     public static void VerifyPath(char[][] maze, String inputPath) {
         //use variables entryRow and entryCol and exitRow and exitCol in this class too
