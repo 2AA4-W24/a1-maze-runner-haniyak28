@@ -32,7 +32,7 @@ public class Main {
         }
         logger.info("**** Reading the maze from file " + inputFile);
         //takes file input and turns maze into a 2d array list
-        char[][] maze = MazeInput.MazeRead(inputFile);
+        char[][] maze = Maze.MazeRead(inputFile);
         //logger.info("**** maze char " + Arrays.deepToString(maze));
 
         //if there's a second argument of path sequence

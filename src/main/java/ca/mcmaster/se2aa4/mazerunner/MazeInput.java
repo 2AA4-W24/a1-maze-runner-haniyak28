@@ -1,6 +1,4 @@
 package ca.mcmaster.se2aa4.mazerunner;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -8,31 +6,7 @@ import java.util.List;
 import java.io.IOException;
 
 public class MazeInput {
-    private static final Logger logger = LogManager.getLogger();
-    public static char[][] MazeRead(String inputFile) {
-        try {
-            List<List<Character>> mazeArray = getLists(inputFile);
-
-            // Convert List of Lists to a 2D char array
-            char[][] maze = new char[mazeArray.size()][];
-            if (!mazeArray.isEmpty()) {
-                for (int i = 0; i < mazeArray.size(); i++) {
-                    List<Character> row = mazeArray.get(i);
-                    maze[i] = new char[row.size()];
-                    for (int j = 0; j < row.size(); j++) {
-                        maze[i][j] = row.get(j);
-                    }
-                }
-                return maze;
-            }
-            return null;
-        } catch (IOException e) {
-            logger.error("/!\\ An error has occurred /!\\");
-            return null;
-        }
-    }
-
-    private static List<List<Character>> getLists(String inputFile) throws IOException {
+    public static List<List<Character>> getLists(String inputFile) throws IOException {
         List<List<Character>> mazeArray = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         String line;
