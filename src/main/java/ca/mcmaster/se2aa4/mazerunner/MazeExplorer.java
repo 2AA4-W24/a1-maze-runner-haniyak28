@@ -16,46 +16,80 @@ public class MazeExplorer extends pathGenerator{
         //use variables entryRow and entryCol and exitRow and exitCol in this class too
         EntryAndExit(maze); //could I make this into a separate class?
         char[] path = inputPath.toCharArray();
-        char[] directionChoice = {'E','W'};
+        boolean verificationCanonical = false;
+        boolean verificationFactorized = false;
+        char[] directionChoice = {'E', 'W'};
         int[] entryRowPoint = {entryRow, exitRow};
         int[] entryColPoint = {entryCol, exitCol};
+        int[] exitRowPoint = {exitRow, entryRow};
+        int[] exitColPoint = {exitCol, entryCol};
+
         logger.info(path);
-        boolean verification = false;
-        for (int choice = 0; choice<directionChoice.length;choice++) {
+        //boolean verification = false;
+        for (int choice = 0; choice < directionChoice.length; choice++) {
             currentDirection = directionChoice[choice];
             // Find entry and exit points
             currentRow = entryRowPoint[choice];
             currentCol = entryColPoint[choice];
+            if (inputPath.charAt(0) == 'F' || inputPath.charAt(0) == 'L' || inputPath.charAt(0) == 'R') {
+                verificationCanonical = verifyCanonicalPath(maze, path, exitRowPoint[choice], exitColPoint[choice]);
+            } else {
+                verificationFactorized = verifyFactorizedPath(maze, inputPath, exitRowPoint[choice], exitColPoint[choice]);
+            }
 
-            //go through the maze using given input sequence and see if it is right
-            for (int i = 0; i < path.length; i++) {
-                if (path[i] == 'R') {
-                    turnRight();
-                } else if (path[i] == 'F') {
-                    moveForward();
-                } else if (path[i] == 'L') {
-                    turnLeft();
-                }
-                logger.info("current row and col " + currentRow + " " + currentCol);
-                if (maze[currentRow][currentCol] == '#') {
-                    break;
-                }
-            }
-            logger.info("row and col now: " + currentRow + " " + currentCol);
-            if (currentRow == exitRow && currentCol == exitCol) {
-                verification = true;
-                //logger.info("Your path sequence is correct!");
+            if (verificationCanonical || verificationFactorized) {
+                logger.info("Correct Path");
+                return;
             }
         }
-        //if true, print that their sequence is right otherwise print that it was wrong
-        if (verification) {
-            logger.info("Your path sequence is correct!");
-        } else {
-            logger.info("Your path sequence is not correct");
-            logger.info("**** Computing a correct path");
-            // Using the pathGenerator class to generate the path
-            pathGenerator.generatePath(maze);
-            //logger.info(generatedPath);
+        logger.info("Incorrect Path");
+        //logger.info("**** Computing a correct path");
+        // Using the pathGenerator class to generate the path
+        //pathGenerator.generatePath(maze);
+    }
+
+    private static boolean verifyCanonicalPath(char[][] maze, char[] path, int exitRow, int exitCol) {
+        //go through the maze using given input sequence and see if it is right
+        for (int i = 0; i < path.length; i++) {
+            if (path[i] == 'R') {
+                turnRight();
+            } else if (path[i] == 'F') {
+                moveForward();
+            } else if (path[i] == 'L') {
+                turnLeft();
+            }
+            logger.info("current row and col " + currentRow + " " + currentCol);
+            if (maze[currentRow][currentCol] == '#') {
+                return false;
+            }
         }
+        logger.info("row and col now: " + currentRow + " " + currentCol);
+        return currentRow == exitRow && currentCol == exitCol;
+    }
+
+    private static boolean verifyFactorizedPath(char[][] maze, String inputPath, int exitRow, int exitCol) {
+        int i = 0;
+        if (inputPath.length()%2 == 0) {
+            while (i < inputPath.length()) {
+                int count = Character.getNumericValue(inputPath.charAt(i));
+                char pathMove = inputPath.charAt(i + 1);
+                i = i + 2;
+
+                logger.info(count + " " + pathMove);
+                for (int j = 0; j < count; j++) {
+                    if (pathMove == 'R') {
+                        turnRight();
+                    } else if (pathMove == 'F') {
+                        moveForward();
+                    } else if (pathMove == 'L') {
+                        turnLeft();
+                    }
+                    if (maze[currentRow][currentCol] == '#') {
+                        return false;
+                    }
+                }
+            }
+        }
+        return currentRow == exitRow && currentCol == exitCol;
     }
 }

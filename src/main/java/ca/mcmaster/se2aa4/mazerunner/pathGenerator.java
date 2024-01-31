@@ -34,7 +34,7 @@ public class pathGenerator {
         }
 
         logger.info("Canonical Path: " + path);
-        logger.info("Factorized Path: " + String.join(" ", factorizedPath));
+        logger.info("Factorized Path: " + String.join("", factorizedPath));
     }
 
     private static List<String> factorizePath(List<Character> path) {
@@ -49,10 +49,8 @@ public class pathGenerator {
                 counter = 1;
             }
         }
-
         // Add the last move
         factorizedPath.add(counter + String.valueOf(path.get(path.size() - 1)));
-
         return factorizedPath;
     }
 
