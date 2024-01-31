@@ -27,8 +27,11 @@ public class MazeExplorer extends pathGenerator{
             currentCol = entryColPoint[choice];
             if (inputPath.charAt(0) == 'F' || inputPath.charAt(0) == 'L' || inputPath.charAt(0) == 'R') {
                 verificationCanonical = verifyCanonicalPath(maze, path, exitRowPoint[choice], exitColPoint[choice]);
-            } else {
+            } else if (Character.isDigit(inputPath.charAt(0))) {
                 verificationFactorized = verifyFactorizedPath(maze, inputPath, exitRowPoint[choice], exitColPoint[choice]);
+            } else {
+                logger.error("Wrong path format given");
+                return;
             }
 
             if (verificationCanonical || verificationFactorized) {
@@ -63,13 +66,21 @@ public class MazeExplorer extends pathGenerator{
 
     private static boolean verifyFactorizedPath(char[][] maze, String inputPath, int exitRow, int exitCol) {
         int i = 0;
-        if (inputPath.length()%2 == 0) {
-            while (i < inputPath.length()) {
-                int count = Character.getNumericValue(inputPath.charAt(i));
-                char pathMove = inputPath.charAt(i + 1);
-                i = i + 2;
+        while (i < inputPath.length()) {
+            // Read the count of consecutive moves
+            StringBuilder countBuilder = new StringBuilder();
+            while (i < inputPath.length() && Character.isDigit(inputPath.charAt(i))) {
+                countBuilder.append(inputPath.charAt(i));
+                i++;
+            }
 
-                //logger.info(count + " " + pathMove);
+            // Convert the count to an integer
+            int count = Integer.parseInt(countBuilder.toString());
+
+            // Read the direction character
+            if (i < inputPath.length()) {
+                char pathMove = inputPath.charAt(i);
+
                 for (int j = 0; j < count; j++) {
                     if (pathMove == 'R') {
                         turnRight();
@@ -82,6 +93,7 @@ public class MazeExplorer extends pathGenerator{
                         return false;
                     }
                 }
+                i++; // Move to the next character after the direction
             }
         }
         return currentRow == exitRow && currentCol == exitCol;
