@@ -66,8 +66,8 @@ public class pathGenerator {
             //run the right hand algorithm
             char rightCell = RightCell(maze);
             char frontCell = FrontCell(maze);
-            logger.info("current col and row " + currentCol + " " + currentRow);
-            logger.info("right cell, front cell " + rightCell + " " + frontCell);
+            //logger.info("current col and row " + currentCol + " " + currentRow);
+            //logger.info("right cell, front cell " + rightCell + " " + frontCell);
             if (rightCell == ' ') {
                 // If there's an empty space to the right but not forward, turn right
                 turnRight();
@@ -84,10 +84,9 @@ public class pathGenerator {
                 gen_path.add('L');
             }
             /*if (currentCol<0 || currentCol>maze[0].length - 1) {
-
             }*/
         }
-        logger.info("row and col now: " + currentRow + " " + currentCol);
+        //logger.info("row and col now: " + currentRow + " " + currentCol);
         return gen_path;
     }
 
@@ -130,8 +129,8 @@ public class pathGenerator {
             case 'S' -> currentDirection = directions[3];
             case 'W' -> currentDirection = directions[0];
         }
-        logger.info("turned right");
-        logger.info(currentDirection);
+        //logger.info("turned right");
+        //logger.info(currentDirection);
     }
 
     public static void turnLeft() {
@@ -144,8 +143,8 @@ public class pathGenerator {
             case 'S' -> currentDirection = directions[3];
             case 'W' -> currentDirection = directions[2];
         }
-        logger.info("left turn");
-        logger.info(currentDirection);
+        //logger.info("left turn");
+        //logger.info(currentDirection);
     }
 
     public static void moveForward() {
@@ -155,8 +154,8 @@ public class pathGenerator {
         else if (currentDirection == 'E') currentCol++;  //prlly a problem here fix this
         else if (currentDirection == 'S') currentRow++;
         else currentCol--;
-        logger.info("moved forward");
-        logger.info(currentDirection);
+        //logger.info("moved forward");
+        //logger.info(currentDirection);
     }
 
     public static void EntryAndExit(char[][] maze) {
@@ -169,8 +168,8 @@ public class pathGenerator {
                 break;
             }
         }
-        logger.info(entryCol);
-        logger.info(entryRow);
+        //logger.info(entryCol);
+        //logger.info(entryRow);
         // Find the exit point assuming it's on the rightmost wall
         for (int row = 0; row < maze.length; row++) {
             if (maze[row][maze[row].length - 1] == ' ') {
@@ -179,7 +178,7 @@ public class pathGenerator {
                 break;
             }
         }
-        logger.info(exitCol);
-        logger.info(exitRow);
+        //logger.info(exitCol);
+        //logger.info(exitRow);
     }
 }

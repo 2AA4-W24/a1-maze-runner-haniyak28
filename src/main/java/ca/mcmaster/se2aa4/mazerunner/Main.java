@@ -1,12 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,7 +34,7 @@ public class Main {
         logger.info("**** Reading the maze from file " + inputFile);
         //takes file input and turns maze into a 2d array list
         char[][] maze = MazeInput.MazeRead(inputFile);
-        logger.info("**** maze char " + Arrays.deepToString(maze));
+        //logger.info("**** maze char " + Arrays.deepToString(maze));
 
         //if there's a second argument of path sequence
         if (inputPath != null) {

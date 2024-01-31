@@ -1,13 +1,14 @@
 package ca.mcmaster.se2aa4.mazerunner;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 
 public class MazeInput {
+    private static final Logger logger = LogManager.getLogger();
     public static char[][] MazeRead(String inputFile) {
         try {
             List<List<Character>> mazeArray = getLists(inputFile);
@@ -26,7 +27,7 @@ public class MazeInput {
             }
             return null;
         } catch (IOException e) {
-            System.out.println("/!\\ An error has occurred /!\\");
+            logger.error("/!\\ An error has occurred /!\\");
             return null;
         }
     }
