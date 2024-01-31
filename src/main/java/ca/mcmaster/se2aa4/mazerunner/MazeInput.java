@@ -18,6 +18,10 @@ public class MazeInput {
                 } else if (line.charAt(idx) == ' ') {
                     row.add(' ');
                 }
+            } if (!mazeArray.isEmpty()) {
+                while (row.size() < mazeArray.get(0).size()){
+                    row.add(' ');
+                }
             }
             mazeArray.add(row);
         }
