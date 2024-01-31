@@ -9,40 +9,43 @@ public class MazeExplorer extends pathGenerator{
     public static void VerifyPath(char[][] maze, String inputPath) {
         //use variables entryRow and entryCol and exitRow and exitCol in this class too
         EntryAndExit(maze); //could I make this into a separate class?
-        char[] path = inputPath.toCharArray();
-        boolean verificationCanonical = false;
-        boolean verificationFactorized = false;
         char[] directionChoice = {'E', 'W'};
         int[] entryRowPoint = {entryRow, exitRow};
         int[] entryColPoint = {entryCol, exitCol};
         int[] exitRowPoint = {exitRow, entryRow};
         int[] exitColPoint = {exitCol, entryCol};
+        boolean correct = false;
 
-        //logger.info(path);
-        //boolean verification = false;
         for (int choice = 0; choice < directionChoice.length; choice++) {
-            currentDirection = directionChoice[choice];
-            // Find entry and exit points
-            currentRow = entryRowPoint[choice];
-            currentCol = entryColPoint[choice];
-            if (inputPath.charAt(0) == 'F' || inputPath.charAt(0) == 'L' || inputPath.charAt(0) == 'R') {
-                verificationCanonical = verifyCanonicalPath(maze, path, exitRowPoint[choice], exitColPoint[choice]);
-            } else if (Character.isDigit(inputPath.charAt(0))) {
-                verificationFactorized = verifyFactorizedPath(maze, inputPath, exitRowPoint[choice], exitColPoint[choice]);
-            } else {
-                logger.error("Wrong path format given");
-                return;
-            }
-
-            if (verificationCanonical || verificationFactorized) {
-                logger.info("Correct Path");
-                return;
-            }
+            correct = verification(maze, directionChoice[choice], entryRowPoint[choice], entryColPoint[choice], exitRowPoint[choice], exitColPoint[choice], inputPath);
         }
-        logger.info("Incorrect Path");
-        //logger.info("**** Computing a correct path");
-        // Using the pathGenerator class to generate the path
-        //pathGenerator.generatePath(maze);
+        if (correct) {
+            logger.info("Correct Path");
+        } else {
+            logger.info("Incorrect Path");
+        }
+    }
+
+    private static boolean verification(char[][] maze, char direction, int entryRowP, int entryColP, int exitRowP, int exitColP, String inputPath){
+        boolean verificationCanonical = false;
+        boolean verificationFactorized = false;
+        char[] path = inputPath.toCharArray();
+        currentDirection = direction;
+        // Find entry and exit points
+        currentRow = entryRowP;
+        currentCol = entryColP;
+        if (inputPath.charAt(0) == 'F' || inputPath.charAt(0) == 'L' || inputPath.charAt(0) == 'R') {
+            verificationCanonical = verifyCanonicalPath(maze, path, exitRowP, exitColP);
+        } else if (Character.isDigit(inputPath.charAt(0))) {
+            verificationFactorized = verifyFactorizedPath(maze, inputPath, exitRowP, exitColP);
+        } else {
+            logger.error("Wrong path format given");
+        }
+
+        if (verificationCanonical || verificationFactorized) {
+           return true; 
+        }
+        return false;
     }
 
     private static boolean verifyCanonicalPath(char[][] maze, char[] path, int exitRow, int exitCol) {
