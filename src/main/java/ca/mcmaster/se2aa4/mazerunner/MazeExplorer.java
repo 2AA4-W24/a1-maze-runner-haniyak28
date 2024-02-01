@@ -47,10 +47,7 @@ public class MazeExplorer extends pathGenerator{
             logger.error("Wrong path format given");
         }
 
-        if (verificationCanonical || verificationFactorized) {
-           return true; 
-        }
-        return false;
+        return verificationCanonical || verificationFactorized;
     }
 
     private static boolean verifyCanonicalPath(char[][] maze, char[] path, int exitRow, int exitCol) {
